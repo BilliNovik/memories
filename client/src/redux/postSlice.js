@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
-import axios from 'axios'
+import * as api from '../api'
 
 const initialState = {
     posts: [],
@@ -9,8 +8,30 @@ const initialState = {
 export const getPosts = createAsyncThunk(
     'posts/getPosts',
     async (obj, { dispatch }) => {
-        const res = await axios.get('https://jsonplaceholder.typicode.com/posts')
-        dispatch(fetchAll(res.data))
+        const { data } = await api.fetchPosts();
+        dispatch(fetchAll(data))
+    }
+)
+
+export const updatePost = createAsyncThunk(
+    'posts/updatePosts',
+    async (obj, { dispatch }) => {
+        const { data } = await api.updatePost(obj.currentId, obj.postData);
+        dispatch(update(data))
+
+        //is it good?
+        dispatch(getPosts())
+    }
+)
+
+export const deletePosts = createAsyncThunk(
+    'posts/deletePosts',
+    async (id, { dispatch }) => {
+        const { data } = await api.deletePost(id);
+        dispatch(deletePost(data))
+
+        //is it good?
+        dispatch(getPosts())
     }
 )
 
@@ -20,9 +41,22 @@ const postSlice = createSlice({
     reducers: {
         fetchAll: (state, { payload }) => {
             state.posts = payload;
-        }
+        },
+
+        create: (state, { payload }) => {
+            api.createPost(payload);
+            state.posts.push(payload);
+        },
+
+        update: (state, { payload }) => {
+            state.posts.map(post => post._id === payload._id ? payload : post)
+        },
+
+        deletePost: (state, { payload }) => {
+            state.posts.filter(post => post._id !== payload._id)
+        },
     }
 })
 
-export const { fetchAll } = postSlice.actions
+export const { fetchAll, create, update, deletePost } = postSlice.actions
 export default postSlice.reducer

@@ -35,6 +35,17 @@ export const deletePosts = createAsyncThunk(
     }
 )
 
+export const likePost = createAsyncThunk(
+    'posts/likePost',
+    async (id, { dispatch }) => {
+        const { data } = await api.likePost(id);
+        dispatch(like(data))
+
+        //is it good?
+        dispatch(getPosts())
+    }
+)
+
 const postSlice = createSlice({
     name: 'posts',
     initialState,
@@ -55,8 +66,12 @@ const postSlice = createSlice({
         deletePost: (state, { payload }) => {
             state.posts.filter(post => post._id !== payload._id)
         },
+
+        like: (state, { payload }) => {
+            state.posts.map(post => post._id === payload._id ? payload : post)
+        },
     }
 })
 
-export const { fetchAll, create, update, deletePost } = postSlice.actions
+export const { fetchAll, create, update, deletePost, like } = postSlice.actions
 export default postSlice.reducer

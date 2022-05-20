@@ -4,7 +4,7 @@ import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles'
-import { create, updatePost } from '../../redux/postSlice';
+import { createPost, updatePost } from '../../redux/postSlice';
 
 function Form({ setCurrentId, currentId }) {
     const classes = useStyles()
@@ -28,7 +28,7 @@ function Form({ setCurrentId, currentId }) {
         if (currentId) {
             dispatch(updatePost({ currentId, postData }))
         } else {
-            dispatch(create(postData));
+            dispatch(createPost(postData));
         }
 
         clear()

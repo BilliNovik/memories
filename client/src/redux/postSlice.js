@@ -13,25 +13,27 @@ export const getPosts = createAsyncThunk(
     }
 )
 
+export const createPost = createAsyncThunk(
+    'posts/createPost',
+    async (obj, { dispatch }) => {
+        const { data } = await api.createPost(obj);
+        dispatch(create(data))
+    }
+)
+
 export const updatePost = createAsyncThunk(
     'posts/updatePosts',
     async (obj, { dispatch }) => {
         const { data } = await api.updatePost(obj.currentId, obj.postData);
         dispatch(update(data))
-
-        //is it good?
-        dispatch(getPosts())
     }
 )
 
 export const deletePosts = createAsyncThunk(
     'posts/deletePosts',
     async (id, { dispatch }) => {
-        const { data } = await api.deletePost(id);
-        dispatch(deletePost(data))
-
-        //is it good?
-        dispatch(getPosts())
+        await api.deletePost(id);
+        dispatch(deletePost(id))
     }
 )
 
@@ -40,9 +42,6 @@ export const likePost = createAsyncThunk(
     async (id, { dispatch }) => {
         const { data } = await api.likePost(id);
         dispatch(like(data))
-
-        //is it good?
-        dispatch(getPosts())
     }
 )
 
@@ -55,20 +54,25 @@ const postSlice = createSlice({
         },
 
         create: (state, { payload }) => {
-            api.createPost(payload);
             state.posts.push(payload);
         },
 
         update: (state, { payload }) => {
-            state.posts.map(post => post._id === payload._id ? payload : post)
+            state.posts.map(post => {
+                console.log(payload)
+                if (post._id === payload._id) post.title = payload.title
+                // if (post._id === payload._id) post = payload
+            })
         },
 
         deletePost: (state, { payload }) => {
-            state.posts.filter(post => post._id !== payload._id)
+            state.posts = state.posts.filter(post => post._id !== payload)
         },
 
         like: (state, { payload }) => {
-            state.posts.map(post => post._id === payload._id ? payload : post)
+            state.posts.map(post => {
+                if (post._id === payload._id) post.likeCount = payload.likeCount
+            })
         },
     }
 })

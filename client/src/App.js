@@ -15,7 +15,8 @@ function App() {
 
     React.useEffect(() => {
         dispatch(getPosts())
-    }, [currentId, dispatch])
+    }, [dispatch])
+    // }, [currentId, dispatch])
 
     return (
         <Container maxidt="lg">

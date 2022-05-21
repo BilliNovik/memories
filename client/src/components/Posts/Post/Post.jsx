@@ -15,7 +15,7 @@ function Post({ post, setCurrentId }) {
 
     return (
         <Card className={classes.card}>
-            <CardMedia className={classes.media} src={post.selectedFile} title={post.title} component="img" alt={post.title} />
+            <CardMedia className={classes.image} src={post.selectedFile} title={post.title} component="img" alt={post.title} />
             <div className={classes.overlay}>
                 <Typography variant='h6'>{post.creator}</Typography>
                 <Typography variant='body2'>{moment(post.createdAt).fromNow()}</Typography>

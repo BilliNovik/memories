@@ -59,8 +59,7 @@ const postSlice = createSlice({
 
         update: (state, { payload }) => {
             state.posts.map(post => {
-                console.log(payload)
-                if (post._id === payload._id) post.title = payload.title
+                // if (post._id === payload._id) state.posts[1] = payload
                 // if (post._id === payload._id) post = payload
             })
         },

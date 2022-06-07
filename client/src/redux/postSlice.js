@@ -58,9 +58,14 @@ const postSlice = createSlice({
         },
 
         update: (state, { payload }) => {
-            state.posts.map(post => {
-                // if (post._id === payload._id) state.posts[1] = payload
-                // if (post._id === payload._id) post = payload
+            state.posts.find(post => {
+                if (post._id === payload._id) {
+                    post.creator = payload.creator
+                    post.title = payload.title
+                    post.message = payload.message
+                    post.tags = payload.tags
+                    post.selectedFile = payload.selectedFile
+                }
             })
         },
 

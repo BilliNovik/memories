@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken'
 
 const auth = async (req, res, next) => {
     try {
-        console.log(req.headers.authorization)
+        if (!req.headers.authorization) return res.json({ message: 'token is not defined' })
+
         const token = req.headers.authorization.split(" ")[1]
         const isCustomAuth = token.length < 500
 

@@ -10,7 +10,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
 import Icon from './icon'
-import { asyncSignIn, logout } from '../../redux/authSlice'
+import { loginUser, asyncSignUp, asyncSignIn } from '../../redux/authSlice'
 
 const initialState = {
     firstName: '',
@@ -40,9 +40,9 @@ function Auth() {
         e.preventDefault()
 
         if (isSignup) {
-            // dispatch(asyncSignUp(formData, navigate))
+            dispatch(asyncSignUp({ formData, navigate }))
         } else {
-            dispatch(asyncSignIn(formData, navigate))
+            dispatch(asyncSignIn({ formData, navigate }))
         }
     }
 
@@ -64,7 +64,7 @@ function Auth() {
         const token = res?.tokenId
 
         try {
-            dispatch(asyncSignIn({ result, token }))
+            dispatch(loginUser({ result, token }))
             navigate('/')
         } catch (error) {
             console.log(error);

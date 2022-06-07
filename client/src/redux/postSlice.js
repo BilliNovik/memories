@@ -74,8 +74,10 @@ const postSlice = createSlice({
         },
 
         like: (state, { payload }) => {
-            state.posts.map(post => {
-                if (post._id === payload._id) post.likeCount = payload.likeCount
+            state.posts.find(post => {
+                if (post._id === payload._id) {
+                    post.likes = payload.likes
+                }
             })
         },
     }

@@ -12,7 +12,8 @@ export const getPosts = async (req, res) => {
 
 export const createPost = async (req, res) => {
     const post = req.body;
-    const newPost = new postMessage(post);
+    console.log(post)
+    const newPost = new postMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
 
     try {
         await newPost.save()
@@ -62,7 +63,6 @@ export const likePost = async (req, res) => {
     }
 
     const updatedPost = await postMessage.findByIdAndUpdate(_id, post, { new: true })
-    // const updatedPost = await postMessage.findByIdAndUpdate(_id, { likeCount: +post.likeCount + 1 }, { new: true })
 
     res.json(updatedPost)
 }

@@ -16,6 +16,16 @@ export const getPosts = createAsyncThunk(
     }
 )
 
+export const getPostById = createAsyncThunk(
+    'posts/getPosts',
+    async (id, { dispatch }) => {
+        dispatch(loadingStart())
+        const { data } = await api.fetchPostsById(id);
+        dispatch(fetchPost(data))
+        dispatch(loadingEnd())
+    }
+)
+
 export const getPostsBySearch = createAsyncThunk(
     'posts/getPostsBySearch',
     async (obj, { dispatch }) => {
@@ -70,6 +80,10 @@ const postSlice = createSlice({
             state.numberOfPages = payload.numberOfPages
         },
 
+        fetchPost: (state, { payload }) => {
+            state.post = payload
+        },
+
         create: (state, { payload }) => {
             state.posts.push(payload);
         },
@@ -113,5 +127,5 @@ const postSlice = createSlice({
     }
 })
 
-export const { fetchAll, create, update, deletePost, like, fetchBySearch, loadingStart, loadingEnd } = postSlice.actions
+export const { fetchAll, create, update, deletePost, like, fetchBySearch, loadingStart, loadingEnd, fetchPost } = postSlice.actions
 export default postSlice.reducer

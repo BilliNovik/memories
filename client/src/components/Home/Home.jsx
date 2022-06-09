@@ -26,6 +26,10 @@ function Home() {
     const page = query.get('page') || 1
     const searchQuery = query.get('searchQuery')
 
+    React.useEffect(() => {
+        dispatch(getPosts())
+    }, [dispatch])
+    // }, [currentId, dispatch])
 
     const searchPost = () => {
         if (search.trim() || tags) {

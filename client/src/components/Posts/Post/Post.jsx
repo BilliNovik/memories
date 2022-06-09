@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Card, CardActions, CardContent, CardMedia, Button, Typography } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import useStyles from './styles'
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -13,6 +14,7 @@ import { deletePosts, likePost } from '../../../redux/postSlice'
 function Post({ post, setCurrentId }) {
     const classes = useStyles()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const user = JSON.parse(localStorage.getItem('profile'))
 
     const Likes = () => {
@@ -27,6 +29,10 @@ function Post({ post, setCurrentId }) {
 
         return <><ThumbUpAltOutlined fontSize="small" />&nbsp;Like</>;
     };
+
+    const openPost = () => {
+        navigate(`/posts/${post._id}`)
+    }
 
     return (
         <Card className={classes.card}>
@@ -51,6 +57,7 @@ function Post({ post, setCurrentId }) {
             <CardContent>
                 <Typography variant='body2' color='textSecondary' gutterBottom >{post.message}</Typography>
             </CardContent>
+            <Button variant="contained" color="primary" style={{ margin: '0 10px' }} onClick={openPost}>Open Post</Button>
             <CardActions className={classes.cardActions}>
                 <Button size="small" color="primary" disabled={!user?.result} onClick={() => dispatch(likePost(post._id))}>
                     <Likes />

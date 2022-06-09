@@ -3,21 +3,36 @@ import * as api from '../api'
 
 const initialState = {
     posts: [],
+    isLoading: false
 }
 
 export const getPosts = createAsyncThunk(
     'posts/getPosts',
-    async (obj, { dispatch }) => {
-        const { data } = await api.fetchPosts();
+    async (page, { dispatch }) => {
+        dispatch(loadingStart())
+        const { data } = await api.fetchPosts(page);
         dispatch(fetchAll(data))
+        dispatch(loadingEnd())
+    }
+)
+
+export const getPostsBySearch = createAsyncThunk(
+    'posts/getPostsBySearch',
+    async (obj, { dispatch }) => {
+        dispatch(loadingStart())
+        const { data: { data } } = await api.fetchPostsBySearch(obj);
+        dispatch(fetchBySearch(data))
+        dispatch(loadingEnd())
     }
 )
 
 export const createPost = createAsyncThunk(
     'posts/createPost',
     async (obj, { dispatch }) => {
+        dispatch(loadingStart())
         const { data } = await api.createPost(obj);
         dispatch(create(data))
+        dispatch(loadingEnd())
     }
 )
 
@@ -50,7 +65,9 @@ const postSlice = createSlice({
     initialState,
     reducers: {
         fetchAll: (state, { payload }) => {
-            state.posts = payload;
+            state.posts = payload.data
+            state.currentPage = payload.currentPage
+            state.numberOfPages = payload.numberOfPages
         },
 
         create: (state, { payload }) => {
@@ -80,8 +97,21 @@ const postSlice = createSlice({
                 }
             })
         },
+
+        fetchBySearch: (state, { payload }) => {
+            state.posts = payload
+        },
+
+        loadingStart: (state, { payload }) => {
+            state.isLoading = true
+        },
+
+        loadingEnd: (state, { payload }) => {
+            state.isLoading = false
+        },
+
     }
 })
 
-export const { fetchAll, create, update, deletePost, like } = postSlice.actions
+export const { fetchAll, create, update, deletePost, like, fetchBySearch, loadingStart, loadingEnd } = postSlice.actions
 export default postSlice.reducer

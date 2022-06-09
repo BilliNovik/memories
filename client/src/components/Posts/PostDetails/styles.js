@@ -20,7 +20,8 @@ export default makeStyles((theme) => ({
         borderRadius: '20px',
         margin: '10px',
         flex: 2,
-        minWidth: '320px'
+        minWidth: '320px',
+        width: '100%'
     },
     imageSection: {
         marginLeft: '20px',
@@ -44,6 +45,7 @@ export default makeStyles((theme) => ({
     },
     commentsOuterContainer: {
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'space-between',
     },
     commentsInnerContainer: {

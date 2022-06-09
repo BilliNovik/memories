@@ -70,6 +70,15 @@ export const likePost = createAsyncThunk(
     }
 )
 
+export const commentPost = createAsyncThunk(
+    'posts/commentPost',
+    async ({ id, value }, { dispatch }) => {
+        const { data } = await api.comment(id, value)
+        dispatch(comment(data))
+        return data
+    }
+)
+
 const postSlice = createSlice({
     name: 'posts',
     initialState,
@@ -124,8 +133,16 @@ const postSlice = createSlice({
             state.isLoading = false
         },
 
+        comment: (state, { payload }) => {
+            state.posts.find(post => {
+                if (post._id === payload._id) {
+                    post.comments = payload.comments
+                }
+            })
+        },
+
     }
 })
 
-export const { fetchAll, create, update, deletePost, like, fetchBySearch, loadingStart, loadingEnd, fetchPost } = postSlice.actions
+export const { fetchAll, create, update, comment, deletePost, like, fetchBySearch, loadingStart, loadingEnd, fetchPost } = postSlice.actions
 export default postSlice.reducer

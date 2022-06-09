@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import useStyles from './styles'
 import { getPostById } from '../../../redux/postSlice'
+import CommentSection from './CommentSection'
 
 function PostDetails() {
     const { post, posts, isLoading } = useSelector(state => state.posts)
@@ -26,6 +27,9 @@ function PostDetails() {
         </Paper>
     }
 
+    const recommendedPost = posts.filter(({ _id }) => _id !== post._id)
+    console.log(recommendedPost)
+
     return (
         <Paper style={{ padding: '20px', borderRadius: '15px' }} elevation={6}>
             <div className={classes.card}>
@@ -38,7 +42,7 @@ function PostDetails() {
                     <Divider style={{ margin: '20px 0' }} />
                     <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
                     <Divider style={{ margin: '20px 0' }} />
-                    {/* <CommentSection post={post} /> */}
+                    <CommentSection post={post} />
                     <Divider style={{ margin: '20px 0' }} />
                 </div>
                 <div className={classes.imageSection}>

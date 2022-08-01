@@ -1,4 +1,4 @@
-# MERN Stack [Memories App](https://dangercreo.netxi.in)
+# MERN Stack [Memories App](https://memories-xi.vercel.app/)
 
 ## Technologies
 

@@ -31,7 +31,7 @@ Your structure can be like...
 └── client
 ```
 
-Open the terminal in two window and write in first window `cd server` and then `npm start` and other window `cd client` and then `npm start` 
+Open the terminal in two window and write in first window `cd server` and then `npm i` and then after installing packages `npm start` and other window `cd client` and then `npm i` and then after installing packages `npm start` 
 
 Don't forget adding your .env params in folder...
 
